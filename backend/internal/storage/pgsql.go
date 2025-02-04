@@ -8,12 +8,16 @@ import (
 )
 
 const (
-	containerTable = "containers"
+	containersTable = "containers"
+	pingsTable      = "pings"
 
-	containerTableIDColumn        = "id"
-	containerTableIPColumn        = "ip"
-	containerTablePingTime        = "ping_time"
-	containerTableLastSuccessPing = "last_success_ping"
+	containersTableIPColumn     = "ip"
+	containersTableNameColumn   = "name"
+	containersTableActiveColumn = "active"
+
+	pingsTableContainerIDColumn = "container_id"
+	pingsTablePingTime          = "ping_time"
+	pingsTableLastSuccessPing   = "last_success_ping"
 )
 
 type DB struct {

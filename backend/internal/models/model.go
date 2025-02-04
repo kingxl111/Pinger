@@ -4,7 +4,7 @@ import "time"
 
 type ContainerPing struct {
 	ID                  int       `json:"id"`
-	IP                  string    `json:"ip"`
+	ContainerID         int       `json:"container_id"`
 	PingTime            time.Time `json:"ping_time"`
 	LastSuccessPingTime time.Time `json:"last_success_ping"`
 }

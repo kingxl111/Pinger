@@ -25,10 +25,10 @@ func (c *ContainerManagerPG) NewContainer(ctx context.Context, container models.
 		return fmt.Errorf("%w: %s", err, op)
 	}
 
-	builder := sq.Insert(containerTable).
+	builder := sq.Insert(pingsTable).
 		PlaceholderFormat(sq.Dollar).
-		Columns(containerTableIPColumn, containerTablePingTime, containerTableLastSuccessPing).
-		Values(container.IP, container.PingTime, container.LastSuccessPingTime).
+		Columns(pingsTableContainerIDColumn, pingsTablePingTime, pingsTableLastSuccessPing).
+		Values(container.ContainerID, container.PingTime, container.LastSuccessPingTime).
 		Suffix("RETURNING id")
 
 	query, args, err := builder.ToSql()
