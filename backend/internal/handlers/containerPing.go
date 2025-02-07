@@ -20,7 +20,7 @@ func (h *Handler) CreateContainerPing(ctx context.Context, log *logrus.Logger) h
 		err := render.DecodeJSON(r.Body, &req)
 		if err != nil {
 			log.Error(op, "failed to decode request", err)
-			// errorResponse(w, http.StatusBadRequest, err.Error())
+			http.Error(w, "Bad request", http.StatusBadRequest)
 			return
 		}
 		defer func() {
@@ -33,7 +33,7 @@ func (h *Handler) CreateContainerPing(ctx context.Context, log *logrus.Logger) h
 		err = h.services.ContainerManagerService.NewContainerPing(ctx, req.ContPing)
 		if err != nil {
 			log.Error(op, "failed to create container ping", err)
-			// errorResponse(w, http.StatusBadRequest, err.Error())
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
 
@@ -47,5 +47,20 @@ func (h *Handler) CreateContainerPing(ctx context.Context, log *logrus.Logger) h
 		if err := json.NewEncoder(w).Encode(jsonResponse); err != nil {
 			log.Error(err.Error())
 		}
+	}
+}
+
+func (h *Handler) GetContainersPing(ctx context.Context, log *logrus.Logger) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		containers, err := h.services.ContainerManagerService.GetContainers(ctx)
+		if err != nil {
+			log.Error("failed to fetch containers: ", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		response := models.GetContainersPingResponse{Containers: containers}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(response)
 	}
 }

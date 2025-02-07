@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8080:8080"
+    networks:
+      - app_network
+    depends_on:
+      - pinger
+
+  pinger:
+    build: ./pinger
+    ports:
+      - "8081:8081"
+    networks:
+      - app_network
+
+networks:
+  app_network:

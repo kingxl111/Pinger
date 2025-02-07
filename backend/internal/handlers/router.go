@@ -32,7 +32,7 @@ func (h *Handler) NewRouter(ctx *context.Context, log *logrus.Logger, env string
 	router.Use(NewLogger(log))
 	router.Route("/", func(r chi.Router) {
 		r.Post("/new-container-ping", h.CreateContainerPing(*ctx, log))
-		r.Get("/get-containers-ping", func(writer http.ResponseWriter, request *http.Request) {})
+		r.Get("/get-containers-ping", h.GetContainersPing(*ctx, log))
 	})
 
 	return router
